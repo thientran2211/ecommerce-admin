@@ -35,26 +35,26 @@ export const CellAction: React.FC<CellActionProps> = ({
     toast.success("Category Id copied to the clipboard.");
   };
 
-  const onDelete = async () => {
+  const onConfirm = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+      toast.success('Category deleted.');
       router.refresh();
-      toast.success("Category deleted.");
     } catch (error) {
-      toast.error("Make sure you removed all products using this category first.");
+      toast.error('Make sure you removed all products using this category first.');
     } finally {
-      setLoading(false)
-      setOpen(false)
+      setOpen(false);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onDelete}
+        onConfirm={onConfirm}
         loading={loading}
       />
       <DropdownMenu>
