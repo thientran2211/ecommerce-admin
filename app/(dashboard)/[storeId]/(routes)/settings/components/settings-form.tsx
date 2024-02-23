@@ -25,15 +25,15 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 
-interface SettingsFormProps {
-  initialData: Store;
-};
-
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(2),
 });
 
 type SettingsFormValue = z.infer<typeof formSchema>;
+
+interface SettingsFormProps {
+  initialData: Store;
+};
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({
   initialData
@@ -56,7 +56,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       await axios.patch(`/api/stores/${params.storeId}`, data);
       router.refresh();
       toast.success("Store updated.");
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Something went wrong.");
     } finally {
       setLoading(false);
@@ -70,11 +70,11 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       router.refresh();
       router.push("/");
       toast.success("Store deleted.");
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Make sure you removed all products and categories first.");
     } finally {
-      setLoading(false)
-      setOpen(false)
+      setLoading(false);
+      setOpen(false);
     }
   }
 
@@ -126,8 +126,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
       <Separator />
       <ApiAlert 
         title="NEXT_PUBLIC_API_URL" 
+        variant="public"
         description={`${origin}/api/${params.storeId}`}
-        variant="public" 
       />
     </>
   );

@@ -32,29 +32,29 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Billboard Id copied to the clipboard.");
-  };
-
-  const onDelete = async () => {
-    try {
-      setLoading(true)
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
-      router.refresh();
-      toast.success("Billboard deleted.");
-    } catch (error) {
-      toast.error("Make sure you removed all categories using this billboard first.");
-    } finally {
-      setLoading(false)
-      setOpen(false)
-    }
+    toast.success('Billboard ID copied to clipboard.');
   }
+
+  const onConfirm = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      toast.success('Billboard deleted.');
+      router.refresh();
+    } catch (error) {
+      toast.error('Make sure you removed all categories using this billboard first.');
+    } finally {
+      setOpen(false);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onDelete}
+        onConfirm={onConfirm}
         loading={loading}
       />
       <DropdownMenu>
