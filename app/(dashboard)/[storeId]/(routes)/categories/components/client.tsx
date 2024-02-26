@@ -1,41 +1,43 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { CategoryColumn, columns } from "./columns";
+import { useParams, useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import { useParams, useRouter } from "next/navigation";
-import { DataTable } from "@/components/ui/data-table";
-import { ApiList } from "@/components/ui/api-list";
+import { ApiAlert } from "@/components/ui/api-alert";
 
-interface CategoryClientProps {
+import { columns, CategoryColumn } from "./columns";
+
+interface CategoriesClientProps {
   data: CategoryColumn[];
-};
+}
 
-export const CategoryClient: React.FC<CategoryClientProps> = ({
+export const CategoriesClient: React.FC<CategoriesClientProps> = ({
   data
 }) => {
-  const router = useRouter();
   const params = useParams();
+  const router = useRouter();
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading 
-          title={`Categories (${data.length})`}
-          description="Manage categories for your store"
-        />
+        <Heading title={`Categories (${data.length})`} description="Manage categories for your store" />
         <Button onClick={() => router.push(`/${params.storeId}/categories/new`)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add New
+          <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API calls for Categories" />
+      <Heading title="API" description="API Calls for Categories" />
       <Separator />
-      <ApiList entityName="categories" entityIdName="categoryId" />
+      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/categories`} />
+      <ApiAlert title="GET" variant="public" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
+      <ApiAlert title="POST" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories`} />
+      <ApiAlert title="PATCH" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
+      <ApiAlert title="DELETE" variant="admin" description={`${window.location.origin}/api/${params.storeId}/categories/{categoryId}`} />
     </>
   );
 };
